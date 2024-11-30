@@ -4,14 +4,20 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 	"time"
-
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func DBinstance() *mongo.Client {
-	MongoDb := "mongodb+srv://sudhanshu:<db_password>@cluster0.nhzudkq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+	err := godotenv.Load(".env")
+	if err != nil {
+    log.Fatalf("Error loading .env file")
+  }
+	
+	MongoDb := os.Getenv("DB_URL")
 	fmt.Print(MongoDb)
 
 	client, err := mongo.NewClient(options.Client().ApplyURI(MongoDb))
